@@ -27,7 +27,7 @@ class Agent(BaseModel):
 
 class Post(BaseModel):
     id: str
-    timestamp: str
+    timestamp: int
     content: str
 
 
