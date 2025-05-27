@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-dev"
+name = "agent_dev"
 version = "0.1.0"
 description = "A agent dev backend package"
 readme = "README.md"
@@ -26,4 +26,4 @@ Homepage = "https://github.com/frankkk96/agent-dev"
 Repository = "https://github.com/frankkk96/agent-dev.git"
 
 [tool.setuptools]
-packages = ["agent-dev"] 
+packages = ["agent_dev"] 
