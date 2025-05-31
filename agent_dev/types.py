@@ -11,6 +11,7 @@ class ChatStatus(Enum):
 
 
 class ChunkType(Enum):
+    IMAGE = "image"
     CONTENT = "content"
     REASONING = "reasoning"
     ERROR = "error"
