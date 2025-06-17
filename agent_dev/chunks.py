@@ -35,3 +35,6 @@ class ContextChunk(BaseModel):
 
 class EndStreamChunk(BaseModel):
     type: str = "end_stream"
+
+
+Chunk = ContentChunk | ReasoningChunk | ImageChunk | ErrorChunk | StatusChunk | ContextChunk | EndStreamChunk
