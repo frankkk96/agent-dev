@@ -10,16 +10,6 @@ class ChatStatus(Enum):
     STREAMING = "streaming"
 
 
-class ChunkType(Enum):
-    IMAGE = "image"
-    CONTENT = "content"
-    REASONING = "reasoning"
-    ERROR = "error"
-    STATUS = "status"
-    CONTEXT = "context"
-    END_STREAM = "end_stream"
-
-
 class Agent(BaseModel):
     name: str
     avatar: str
