@@ -3,14 +3,14 @@ import uuid
 from openai import OpenAI
 from typing import List, AsyncIterator
 
+from utils.s3 import b64_to_s3, S3
 from agents.base import ChatStatus
-from agents.utils.s3 import b64_to_s3, S3
 
 from stream.message import image_gen_message, Message
 from stream.chunks import StatusChunk, ImageChunk
 
 
-class Service:
+class ImageGenAgent:
     def __init__(self, base_url: str, api_key: str, model: str, s3: S3):
         self.base_url = base_url
         self.api_key = api_key
