@@ -1,5 +1,6 @@
 import json
 import time
+import uuid
 import redis
 
 from openai import OpenAI
@@ -30,7 +31,8 @@ class RSSAgent:
 
     async def stream(self, req_messages: List[Message]) -> AsyncIterator[str]:
         try:
-            yield StatusChunk(status=ChatStatus.STREAMING.value).to_sse()
+            message_id = str(uuid.uuid4())
+            yield StatusChunk(status=ChatStatus.STREAMING.value, message_id="status:" + message_id).to_sse()
             client = OpenAI(
                 base_url=self.base_url, api_key=self.api_key)
             messages = [chat_message(
@@ -49,10 +51,10 @@ class RSSAgent:
                 content = _chunk.choices[0].delta.content if hasattr(
                     _chunk.choices[0].delta, 'content') else None
                 if content:
-                    yield ContentChunk(text=content).to_sse()
+                    yield ContentChunk(text=content, message_id="content:" + message_id).to_sse()
 
         except Exception as e:
-            yield ErrorChunk(text="Service Error: " + str(e)).to_sse()
+            yield ErrorChunk(text="Service Error: " + str(e), message_id="error:" + message_id).to_sse()
         finally:
             yield "data: [DONE]\n\n"
 
