@@ -1,3 +1,5 @@
+import requests
+
 from typing import Optional
 from pydantic import BaseModel
 from openai.types.chat import ChatCompletionMessageParam
@@ -28,6 +30,24 @@ def chat_message(message: Message) -> ChatCompletionMessageParam:
         return {
             "role": message.role,
             "content": message.text,
+        }
+
+
+def image_gen_message(message: Message) -> ChatCompletionMessageParam:
+    if message.image_url != None:
+        file_path = "/tmp/" + message.image_url.split("/")[-1]
+        response = requests.get(message.image_url)
+        if response.status_code != 200:
+            raise Exception(f"Failed to get image from {message.image_url}")
+        with open(file_path, "wb") as f:
+            f.write(response.content)
+        return {
+            "prompt": message.text,
+            "image": open(file_path, "rb"),
+        }
+    else:
+        return {
+            "prompt": message.text,
         }
 
 
