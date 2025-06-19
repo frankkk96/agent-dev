@@ -1,50 +1,44 @@
 import json
 import time
 import uuid
-import redis
 
 from openai import OpenAI
 from typing import List, AsyncIterator
 from openai.types.chat import ChatCompletionSystemMessageParam, ChatCompletionUserMessageParam
 
-from agent_dev.agents.base import Post, ChatStatus
-from agent_dev.stream.message import chat_message, Message
-from agent_dev.contexts.context import parse_rss_to_context
-from agent_dev.stream.chunks import StatusChunk, ContentChunk, ErrorChunk
+from utils.redis import Redis
+from stream.message import chat_message, Message
+from contexts.context import parse_rss_to_context
+from agents.base import Post, ChatStatus, ModelProvider
+from stream.chunks import StatusChunk, ContentChunk, ErrorChunk
 
 
 class RSSAgent:
-    def __init__(self, name: str, base_url: str, api_key: str, model: str, feeds: dict, timeout: int, post_prompt: str, redis_host: str, redis_port: int, redis_password: str):
+    def __init__(self, name: str, model: ModelProvider, redis: Redis, feeds: dict, post_prompt: str):
         self.name = name
-        self.base_url = base_url
-        self.api_key = api_key
         self.model = model
         self.feeds = feeds
-        self.timeout = timeout
+        self.timeout = 3600
         self.post_prompt = post_prompt
-        self.redis = redis.Redis(
-            host=redis_host,
-            port=redis_port,
-            password=redis_password,
-            ssl=True
-        )
+        self.redis = redis
 
-    async def stream(self, req_messages: List[Message]) -> AsyncIterator[str]:
+    async def stream(self, messages: List[Message]) -> AsyncIterator[str]:
         try:
             message_id = str(uuid.uuid4())
+
             yield StatusChunk(status=ChatStatus.STREAMING.value, message_id="status:" + message_id).to_sse()
-            client = OpenAI(
-                base_url=self.base_url, api_key=self.api_key)
-            messages = [chat_message(
-                message) for message in req_messages]
+            client = OpenAI(base_url=self.model.base_url,
+                            api_key=self.model.api_key)
+            chat_messages = [chat_message(message) for message in messages]
             context = parse_rss_to_context(self.feeds)
-            messages.insert(0, ChatCompletionSystemMessageParam(
+            chat_messages.insert(0, ChatCompletionSystemMessageParam(
                 role="system",
                 content=context
             ))
+
             stream = client.chat.completions.create(
-                model=self.model,
-                messages=messages,
+                model=self.model.model,
+                messages=chat_messages,
                 stream=True,
             )
             for _chunk in stream:
@@ -69,9 +63,9 @@ class RSSAgent:
         prompt = self.post_prompt
         context = parse_rss_to_context(self.feeds)
         client = OpenAI(
-            base_url=self.base_url, api_key=self.api_key)
+            base_url=self.model.base_url, api_key=self.model.api_key)
         response = client.chat.completions.create(
-            model=self.model,
+            model=self.model.model,
             messages=[
                 ChatCompletionSystemMessageParam(
                     role="system",

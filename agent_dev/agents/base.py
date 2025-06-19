@@ -2,6 +2,12 @@ from pydantic import BaseModel
 from enum import Enum
 
 
+class ModelProvider:
+    base_url: str
+    api_key: str
+    model: str
+
+
 class AgentMetadata(BaseModel):
     name: str
     avatar: str
