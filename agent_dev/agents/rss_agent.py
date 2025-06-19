@@ -1,4 +1,3 @@
-import os
 import json
 import time
 import redis
@@ -7,13 +6,13 @@ from openai import OpenAI
 from typing import List, AsyncIterator
 from openai.types.chat import ChatCompletionSystemMessageParam, ChatCompletionUserMessageParam
 
-from agent_dev.types import ChatStatus, Message, Post
-from agent_dev.chunks import StatusChunk, ContentChunk, ErrorChunk
-from agent_dev.message import to_chat_message
-from agent_dev.context import parse_rss_to_context
+from agent_dev.agents.base import Post, ChatStatus
+from agent_dev.stream.message import chat_message, Message
+from agent_dev.contexts.context import parse_rss_to_context
+from agent_dev.stream.chunks import StatusChunk, ContentChunk, ErrorChunk
 
 
-class RSSBot:
+class RSSAgent:
     def __init__(self, name: str, base_url: str, api_key: str, model: str, feeds: dict, timeout: int, post_prompt: str, redis_host: str, redis_port: int, redis_password: str):
         self.name = name
         self.base_url = base_url
@@ -34,7 +33,7 @@ class RSSBot:
             yield StatusChunk(status=ChatStatus.STREAMING.value).to_sse()
             client = OpenAI(
                 base_url=self.base_url, api_key=self.api_key)
-            messages = [to_chat_message(
+            messages = [chat_message(
                 message) for message in req_messages]
             context = parse_rss_to_context(self.feeds)
             messages.insert(0, ChatCompletionSystemMessageParam(

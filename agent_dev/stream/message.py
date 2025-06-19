@@ -1,10 +1,15 @@
-
+from typing import Optional
+from pydantic import BaseModel
 from openai.types.chat import ChatCompletionMessageParam
 
-from .types import Message
+
+class Message(BaseModel):
+    role: str
+    text: str
+    image_url: Optional[str] = None
 
 
-def to_chat_message(message: Message) -> ChatCompletionMessageParam:
+def chat_message(message: Message) -> ChatCompletionMessageParam:
     if message.image_url != None and message.image_url != "":
         return {
             "role": message.role,
