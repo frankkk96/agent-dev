@@ -14,6 +14,8 @@ class Agent(BaseModel):
     name: str
     avatar: str
     config_schema: str
+    description: str
+    capability: str
 
 
 class Post(BaseModel):
