@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agent_dev"
-version = "0.1.10"
+version = "0.1.11"
 description = "A agent dev backend package"
 readme = "README.md"
 authors = [
@@ -28,5 +28,6 @@ dependencies = [
 Homepage = "https://github.com/frankkk96/agent-dev"
 Repository = "https://github.com/frankkk96/agent-dev.git"
 
-[tool.setuptools]
-packages = ["agent_dev"] 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent_dev*"] 
