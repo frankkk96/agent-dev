@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from enum import Enum
 
 
-class ModelProvider:
+class ModelProvider(BaseModel):
     base_url: str
     api_key: str
     model: str
