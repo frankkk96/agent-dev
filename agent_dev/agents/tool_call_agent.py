@@ -67,7 +67,7 @@ class ToolCallAgent:
                         tool for tool in self.tools if tool.name == tc_name)
                     yield StatusChunk(status=ChatStatus.TOOL_CALL.value, message_id='status-' + message_id).to_sse()
                     result = tool.call(tc_args)
-                    messages.extend(tc_messages(
+                    chat_messages.extend(tc_messages(
                         tc_id, tc_name, tc_args, result))
                     yield ContextChunk(text=result, message_id='context-' + message_id).to_sse()
 
