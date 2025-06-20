@@ -55,7 +55,7 @@ def tc_messages(tc_id: str, tc_name: str, tc_args: str, tc_result: str) -> ChatC
     return [
         {
             "role": "assistant",
-            "tool_calls": [{"id": tc_id, "function": {"name": tc_name, "arguments": tc_args}}],
+            "tool_calls": [{"id": tc_id, "type": "function", "function": {"name": tc_name, "arguments": tc_args}}],
         },
         {
             "role": "tool",
