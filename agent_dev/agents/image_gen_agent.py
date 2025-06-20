@@ -10,26 +10,27 @@ from agent_dev.stream.message import image_gen_message, Message
 
 
 class ImageGenAgent:
-    def __init__(self, s3: S3):
+    def __init__(self, model: ModelProvider, s3: S3):
+        self.model = model
         self.s3 = s3
 
-    async def stream(self, model: ModelProvider, messages: List[Message]) -> AsyncIterator[str]:
+    async def stream(self, messages: List[Message]) -> AsyncIterator[str]:
         try:
             message_id = str(uuid.uuid4())
 
             yield StatusChunk(status=ChatStatus.STREAMING.value, message_id="status:" + message_id).to_sse()
             client = OpenAI(
-                base_url=model.base_url, api_key=model.api_key)
+                base_url=self.model.base_url, api_key=self.model.api_key)
             req = image_gen_message(messages[-1])
             if "image" in req:
                 rsp = client.images.edit(
-                    model=model.model,
+                    model=self.model.model,
                     prompt=req["prompt"],
                     image=req["image"],
                 )
             else:
                 rsp = client.images.generate(
-                    model=model.model,
+                    model=self.model.model,
                     prompt=req["prompt"],
                 )
             for data in rsp.data:
