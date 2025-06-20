@@ -1,9 +1,9 @@
 import json
-from typing import Literal
+from typing import Literal, Callable
 
 
 class Parameter:
-    def __init__(self, name, type: Literal["string", "number", "boolean", "array", "object"], description, required):
+    def __init__(self, name: str, type: Literal["string", "number", "boolean", "array", "object"], description: str, required: bool):
         self.name = name
         self.type = type
         self.description = description
@@ -11,7 +11,7 @@ class Parameter:
 
 
 class Tool:
-    def __init__(self, name, description, parameters: list[Parameter], func):
+    def __init__(self, name: str, description: str, parameters: list[Parameter], func: Callable):
         self.name = name
         self.description = description
         self.parameters = parameters
