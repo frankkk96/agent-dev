@@ -19,6 +19,7 @@ class Tool:
 
     def call(self, args: str):
         args_dict = json.loads(args)
+        print("calling tool: ", self.name, "with args: ", args_dict)
 
         # First check all required parameters
         for parameter in self.parameters:
@@ -42,6 +43,7 @@ class Tool:
                     args_dict[parameter.name] = dict(args_dict[parameter.name])
 
         result = self.func(**args_dict)
+        print("called tool: ", self.name, "result: ", result)
         if isinstance(result, str):
             return result
         else:
