@@ -6,7 +6,7 @@ class Redis:
         self.host = host
         self.port = port
         self.password = password
-        self.redis = redis.Redis(
+        self.client = redis.Redis(
             host=self.host,
             port=self.port,
             password=self.password,

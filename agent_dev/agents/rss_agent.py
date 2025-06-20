@@ -53,7 +53,7 @@ class RSSAgent:
             yield "data: [DONE]\n\n"
 
     async def get_post(self) -> Post:
-        post = self.redis.get(f"{self.name}:post")
+        post = self.redis.client.get(f"{self.name}:post")
         if post:
             return Post(**json.loads(post))
         else:
@@ -80,4 +80,5 @@ class RSSAgent:
         )
         post = Post(id=response.id, timestamp=int(time.time() * 1000),
                     content=response.choices[0].message.content)
-        self.redis.set(f"{self.name}:post", json.dumps(post.model_dump()))
+        self.redis.client.set(f"{self.name}:post",
+                              json.dumps(post.model_dump()))
