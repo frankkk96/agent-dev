@@ -20,7 +20,7 @@ def b64_to_s3(b64: str, s3: S3) -> str:
     img_bytes = base64.b64decode(b64)
 
     # S3 客户端
-    s3 = boto3.client(
+    s3_client = boto3.client(
         "s3",
         endpoint_url=s3.endpoint_url,
         aws_access_key_id=s3.access_key,
@@ -29,8 +29,8 @@ def b64_to_s3(b64: str, s3: S3) -> str:
     )
 
     key = f"results/{file_name}"
-    s3.put_object(Bucket=s3.bucket, Key=key, Body=img_bytes,
-                  ContentType="image/png")
+    s3_client.put_object(Bucket=s3.bucket, Key=key, Body=img_bytes,
+                         ContentType="image/png")
 
     # 返回 S3 访问地址
     return f"{s3.public_endpoint}/results/{file_name}"

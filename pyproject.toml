@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agent_dev"
-version = "0.1.26"
+version = "0.1.27"
 description = "A agent dev backend package"
 readme = "README.md"
 authors = [
