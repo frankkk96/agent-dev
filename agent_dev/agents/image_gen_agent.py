@@ -3,11 +3,10 @@ import uuid
 from openai import OpenAI
 from typing import List, AsyncIterator
 
-from utils.s3 import b64_to_s3, S3
-from agents.base import ChatStatus, ModelProvider
-
-from stream.message import image_gen_message, Message
-from stream.chunks import StatusChunk, ImageChunk
+from agent_dev.utils.s3 import b64_to_s3, S3
+from agent_dev.agents.base import ChatStatus, ModelProvider
+from agent_dev.stream.chunks import StatusChunk, ImageChunk
+from agent_dev.stream.message import image_gen_message, Message
 
 
 class ImageGenAgent:

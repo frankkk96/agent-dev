@@ -2,10 +2,10 @@ import uuid
 from openai import OpenAI
 from typing import List, AsyncIterator
 
-from tools import Tool
-from agents.base import ChatStatus, ModelProvider
-from stream.message import Message, chat_message, tc_messages
-from stream.chunks import StatusChunk, ContentChunk, ContextChunk, ErrorChunk
+from agent_dev.tools import Tool
+from agent_dev.agents.base import ChatStatus, ModelProvider
+from agent_dev.stream.message import Message, chat_message, tc_messages
+from agent_dev.stream.chunks import StatusChunk, ContentChunk, ContextChunk, ErrorChunk
 
 
 class ToolCallAgent:

@@ -2,9 +2,9 @@ import uuid
 from openai import OpenAI
 from typing import List, AsyncIterator
 
-from agents.base import ChatStatus, ModelProvider
-from stream.message import Message, chat_message
-from stream.chunks import StatusChunk, ContentChunk, ReasoningChunk, ErrorChunk
+from agent_dev.agents.base import ChatStatus, ModelProvider
+from agent_dev.stream.message import Message, chat_message
+from agent_dev.stream.chunks import StatusChunk, ContentChunk, ReasoningChunk, ErrorChunk
 
 
 class SimpleChatAgent:

@@ -6,11 +6,11 @@ from openai import OpenAI
 from typing import List, AsyncIterator
 from openai.types.chat import ChatCompletionSystemMessageParam, ChatCompletionUserMessageParam
 
-from utils.redis import Redis
-from stream.message import chat_message, Message
-from contexts.context import parse_rss_to_context
-from agents.base import Post, ChatStatus, ModelProvider
-from stream.chunks import StatusChunk, ContentChunk, ErrorChunk
+from agent_dev.utils.redis import Redis
+from agent_dev.stream.message import chat_message, Message
+from agent_dev.contexts.context import parse_rss_to_context
+from agent_dev.agents.base import Post, ChatStatus, ModelProvider
+from agent_dev.stream.chunks import StatusChunk, ContentChunk, ErrorChunk
 
 
 class RSSAgent:
