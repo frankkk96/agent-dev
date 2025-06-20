@@ -34,7 +34,7 @@ def chat_message(message: Message) -> ChatCompletionMessageParam:
 
 
 def image_gen_message(message: Message) -> ChatCompletionMessageParam:
-    if message.image_url != None:
+    if message.image_url != None and message.image_url != "":
         file_path = "/tmp/" + message.image_url.split("/")[-1]
         response = requests.get(message.image_url)
         if response.status_code != 200:
